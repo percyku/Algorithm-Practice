@@ -65,6 +65,38 @@ M.addNeighbor(K);
 
 let result = [];
 
-function DFT(starter) {}
+function DFT(starter) {
+  starter.visited = true;
+  result.push(starter.value);
+  starter.neighbors.forEach((neighbor) => {
+    if (!neighbor.visited) {
+      DFT(neighbor);
+    }
+  });
 
-function BFT(starter) {}
+  return result;
+}
+
+function BFT(starter) {
+  let queue = [];
+  starter.visited = true;
+  queue.push(starter);
+
+  while (queue.length != 0) {
+    let firstNode = queue.shift();
+    result.push(firstNode.value);
+    firstNode.neighbors.forEach((neighbor) => {
+      if (!neighbor.visited) {
+        neighbor.visited = true;
+        queue.push(neighbor);
+      }
+    });
+  }
+  return result;
+}
+
+// console.log(DFT(A));
+// console.log(DFT(F));
+
+// console.log(BFT(A));
+console.log(BFT(F));
