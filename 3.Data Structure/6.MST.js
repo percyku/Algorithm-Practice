@@ -55,8 +55,63 @@ C.addNeighbor(e9);
 F.addNeighbor(e9);
 
 let bucket = [];
-// console.log(mstPrim(A));
+console.log(mstPrim(A));
 
-function mstPrim(startNode) {}
+function mstPrim(startNode) {
+  let mstEdge = [];
+  for (let i = 0; i < startNode.edges.length; i++) {
+    bucket.push(startNode.edges[i]);
+  }
 
-function getBestEdge() {}
+  let bestEdge = getBestEdge();
+
+  while (bestEdge != null) {
+    let n1 = bestEdge.node1;
+    let n2 = bestEdge.node2;
+    n1.visited = true;
+    n2.visited = true;
+    mstEdge.push(bestEdge);
+
+    bucket = [];
+
+    allNodes.forEach((node) => {
+      if (node.visited) {
+        console.log(node);
+        node.edges.forEach((edge) => {
+          if (!mstEdge.includes(edge)) {
+            bucket.push(edge);
+          }
+        });
+      }
+    });
+    bestEdge = getBestEdge();
+    console.log(bestEdge);
+
+    console.log("---------------------------");
+  }
+
+  return mstEdge;
+}
+
+function getBestEdge() {
+  let bestEdge = null;
+  while (bestEdge == null && bucket.length != 0) {
+    //find the best edge
+    bestEdge = bucket[0];
+    let index = 0;
+    bucket.forEach((edge, i) => {
+      console.log(edge);
+      if (bestEdge.weight > edge.weight) {
+        bestEdge = edge;
+        index = i;
+      }
+    });
+
+    if (bestEdge.node1.visited && bestEdge.node2.visited) {
+      bucket.splice(index, 1);
+      bestEdge = null;
+    }
+  }
+
+  return bestEdge;
+}
